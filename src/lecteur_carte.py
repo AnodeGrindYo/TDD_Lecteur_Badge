@@ -1,7 +1,7 @@
 
 class LecteurCarte:
     def __init__(self):
-        self.badge_autorise = "123456789"
+        self.badge_autorise = None
         self.acces_autorise = False
 
     def presenter_badge(self, badge):

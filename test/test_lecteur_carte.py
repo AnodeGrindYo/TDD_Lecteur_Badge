@@ -1,6 +1,6 @@
 import pytest
-from src.lecteur_carte import LecteurCarte
-from src.badge import Badge
+from lecteur_carte import LecteurCarte
+from badge import Badge
 
 ## Histoire 1 : Accès autorisé à la porte
 # **FONCTIONNALITÉ** : Contrôle d'accès par badge
