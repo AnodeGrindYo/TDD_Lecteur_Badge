@@ -1,3 +1,4 @@
+from badge import Badge
 
 class LecteurCarte:
     def __init__(self):
