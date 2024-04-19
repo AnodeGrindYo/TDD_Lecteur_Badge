@@ -17,6 +17,6 @@ def test_controle_acces_par_badge():
 #   **QUAND** le badge est présenté au lecteur de carte
     lecteur_carte.presenter_badge(badge)
 #   **ALORS** l'accès doit être autorisé
-    assert lecteur_carte.acces_autorise == True
+    assert lecteur_carte.acces_autorise == True #
 
 # Histoire 2 :  contr

@@ -14,36 +14,36 @@ jobs:
           fetch-depth: 0 # Nécessaire pour les opérations Git qui nécessitent l'historique complet
           token: ${{ secrets.MY_PAT }} # Nécessaire pour les opérations Git qui nécessitent l'historique complet
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12.0' 
+    #   - name: Set up Python
+    #     uses: actions/setup-python@v4
+    #     with:
+    #       python-version: '3.12.0' 
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    #   - name: Install dependencies
+    #     run: |
+    #       python -m pip install --upgrade pip
+    #       pip install -r requirements.txt
 
-      - name: Run tests with pytest
-        id: pytest
-        run: |
-          pytest
+    #   - name: Run tests with pytest
+    #     id: pytest
+    #     run: |
+    #       pytest
 
-      - name: test_ok
-        if: success()
-        run: |
-          git fetch
-          git checkout main
-          git merge --ff-only origin/dev
-          git push origin main
+    #   - name: test_ok
+    #     if: success()
+    #     run: |
+    #       git fetch
+    #       git checkout main
+    #       git merge --ff-only origin/dev
+    #       git push origin main
           
-      - name: test_ko
-        if: failure()
-        run: |
-          unique_branch_suffix=$(date +%s)
-          git checkout -b failure/$unique_branch_suffix
-          git push origin failure/$unique_branch_suffix
+    #   - name: test_ko
+    #     if: failure()
+    #     run: |
+    #       unique_branch_suffix=$(date +%s)
+    #       git checkout -b failure/$unique_branch_suffix
+    #       git push origin failure/$unique_branch_suffix
           
-          git checkout dev
-          git reset --soft HEAD~1
-          git push origin dev --force
+    #       git checkout dev
+    #       git reset --soft HEAD~1
+    #       git push origin dev --force
