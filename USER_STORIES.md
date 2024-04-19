@@ -16,7 +16,7 @@ SCÉNARIO: Authentification valide avec un badge
 
 SCÉNARIO: Tentative d'authentification avec un badge non reconnu
     ÉTANT DONNÉ un lecteur de badge actif
-    QUAND je présente un badge "99999999" au lecteur
+    QUAND je présente un badge "99999999", non enregistré dans le système, au lecteur
     ALORS l'accès doit être refusé
     ET un message d'erreur "Badge non reconnu" est affiché
 
