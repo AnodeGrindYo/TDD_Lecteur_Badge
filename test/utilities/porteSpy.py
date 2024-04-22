@@ -8,3 +8,6 @@ class PorteSpy (Porte):
 
     def ouvrir(self):
         self.porte_ouverte = True
+
+    def fermer(self):
+        self.porte_ouverte = False

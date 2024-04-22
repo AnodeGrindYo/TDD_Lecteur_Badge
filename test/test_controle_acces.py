@@ -2,60 +2,51 @@ import pytest
 from moteur_ouverture import MoteurOuverture
 from utilities.porteSpy import PorteSpy
 from utilities.lecteurFake import LecteurFake
+from badge import Badge
 
 ## Cas nominal 
 def test_lecteur_detecte_badge_et_ouvre_porte():
-# ETANT DONNE une porte reliée à un lecteur, ayant détecté un badge
+    # ETANT DONNE une porte reliée à un lecteur, ayant détecté un badge
     porte_spy = PorteSpy()
     lecteur_fake = LecteurFake()
 
-    lecteur_fake.simuler_detection_badge()
+    badge = Badge()
+
+    lecteur_fake.simuler_detection_badge(badge)
 
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-# QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
+    # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
     moteur_ouverture.interroger()
-# ALORS le signal d'ouverture est envoyé à la porte
+    # ALORS le signal d'ouverture est envoyé à la porte
     assert porte_spy.porte_ouverte
 
 
 ## Cas d'erreur
 def test_lecteur_non_detecte_badge_et_ne_pas_ouvrir_porte():
-# ETANT DONNE une porte reliée à un lecteur, n'ayant pas détecté de badge
+    # ETANT DONNE une porte reliée à un lecteur, n'ayant pas détecté de badge
     porte_spy = PorteSpy()
     lecteur_fake = LecteurFake()
 
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-# QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
+    # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
     moteur_ouverture.interroger()
-# ALORS le signal d'ouverture n'est pas envoyé à la porte
+    # ALORS le signal d'ouverture n'est pas envoyé à la porte
     assert not porte_spy.porte_ouverte
 
 ## Cas aucune interrogation
 def test_aucune_interrogation():
-# ETANT DONNE une porte reliée à un lecteur
+    # ETANT DONNE une porte reliée à un lecteur
     porte_spy = PorteSpy()
     lecteur_fake = LecteurFake()
 
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-# QUAND le Moteur d'ouverture n'effectue pas d'interrogation des lecteurs
-# ALORS le signal d'ouverture n'est pas envoyé à la porte
+    # QUAND le Moteur d'ouverture n'effectue pas d'interrogation des lecteurs
+    # ALORS le signal d'ouverture n'est pas envoyé à la porte
     assert not porte_spy.porte_ouverte
 
-## Cas non badgé
-def test_non_badge():
-# ETANT DONNE une porte reliée à un lecteur, n'ayant pas détecté de badge
-    porte_spy = PorteSpy()
-    lecteur_fake = LecteurFake()
-
-    moteur_ouverture = MoteurOuverture()
-    moteur_ouverture.associer(lecteur_fake, porte_spy)
-# QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
-    moteur_ouverture.interroger()
-# ALORS le signal d'ouverture n'est pas envoyé à la porte
-    assert not porte_spy.porte_ouverte
 
 ## Cas deux portes
 def test_deux_portes_un_seul_lecteur_detecte_badge():
@@ -67,10 +58,12 @@ def test_deux_portes_un_seul_lecteur_detecte_badge():
 
     lecteur_fake = LecteurFake()
 
+    badge = Badge()
+
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake, porte_spy1)
 
-    lecteur_fake.simuler_detection_badge()
+    lecteur_fake.simuler_detection_badge(badge)
     # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
     moteur_ouverture.interroger()
     # ALORS la première porte est ouverte
@@ -89,11 +82,13 @@ def test_deux_portes_un_seul_lecteur_detecte_badge_inverse():
     lecteur_fake1 = LecteurFake()
     lecteur_fake2 = LecteurFake()
 
+    badge = Badge()
+
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake1, porte_spy1)
     moteur_ouverture.associer(lecteur_fake2, porte_spy2)
 
-    lecteur_fake2.simuler_detection_badge()
+    lecteur_fake2.simuler_detection_badge(badge)
     # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
     moteur_ouverture.interroger()
     # ALORS la première porte est ouverte
@@ -112,15 +107,62 @@ def test_deux_portes_deux_lecteurs_deux_badges():
     lecteur_fake1 = LecteurFake()
     lecteur_fake2 = LecteurFake()
 
+    badge1 = Badge()
+    badge2 = Badge()
+
     moteur_ouverture = MoteurOuverture()
     moteur_ouverture.associer(lecteur_fake1, porte_spy1)
     moteur_ouverture.associer(lecteur_fake2, porte_spy2)
 
-    lecteur_fake1.simuler_detection_badge()
-    lecteur_fake2.simuler_detection_badge()
+    lecteur_fake1.simuler_detection_badge(badge1)
+    lecteur_fake2.simuler_detection_badge(badge2)
     # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
     moteur_ouverture.interroger()
     # ALORS la première porte est ouverte
     # ET la deuxième porte est ouverte
     assert porte_spy1.porte_ouverte
     assert porte_spy2.porte_ouverte
+
+## Cas badge bloqué
+def test_badge_bloque():
+    # ETANT DONNE un lecteur ayant détecté un badge
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+    moteur_ouverture = MoteurOuverture()
+    badge = Badge()
+
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+    lecteur_fake.presenter_badge(badge)
+
+    # ET que le badge a été bloqué
+    moteur_ouverture.bloquer_badge(badge)
+    # QUAND le moteur d'ouverture effectue une interrogation du lecteur
+    moteur_ouverture.interroger()
+    # ALORS la porte n'est pas ouverte
+    assert not porte_spy.porte_ouverte
+
+
+
+
+## Cas : un badge non bloque est detecte, la porte est ouverte, puis un autre badge bloque est detecte
+def test_porte_est_ouverte_puis_badge_bloque_est_presente():
+    # ETANT DONNE un lecteur ayant detecté un badge non bloqué
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+    moteur_ouverture = MoteurOuverture()
+    badge1 = Badge()
+
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+    lecteur_fake.presenter_badge(badge1)
+    # ET que le moteur d'ouverture a autorisé l'ouverture de la porte une premiere fois
+    moteur_ouverture.interroger()
+    assert porte_spy.porte_ouverte
+    # ET que la porte est refermée
+    porte_spy.fermer()
+    # QUAND un badge bloqué est ensuite présenté au lecteur
+    badge2 = Badge()
+    moteur_ouverture.bloquer_badge(badge2)
+    lecteur_fake.presenter_badge(badge2)
+    moteur_ouverture.interroger()
+    # ALORS la porte n'est pas ouverte
+    assert not porte_spy.porte_ouverte
