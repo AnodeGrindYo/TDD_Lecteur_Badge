@@ -14,8 +14,14 @@ class MoteurOuverture:
         for lecteur, porte in self.associations.items():
             if lecteur.badge_detecte:
                 if not self.badge_est_bloque(lecteur.badge):
+                    lecteur.bip(True)
                     porte.ouvrir()
                     lecteur.reset()
+                else:
+                    lecteur.bip(False)
+                    lecteur.reset()
+
+
 
     def bloquer_badge(self, badge):
         print("blocage du badge ", badge)
