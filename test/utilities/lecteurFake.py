@@ -1,6 +1,6 @@
 from lecteur_carte import LecteurCarte
-import winsound
 import time
+import pyttsx3
 
 class LecteurFake (LecteurCarte):
     def __init__(self):
@@ -8,6 +8,12 @@ class LecteurFake (LecteurCarte):
         self.badge_detecte = False
         self.badge = None
         self.bip_amount = 0
+        self.initialize_biper()
+
+    def initialize_biper(self):
+        self.engine = pyttsx3.init()
+        voices = self.engine.getProperty('voices') 
+        self.engine.setProperty('voice', voices[1].id)
 
     def simuler_detection_badge(self, badge):
         self.badge_detecte = True
@@ -20,23 +26,10 @@ class LecteurFake (LecteurCarte):
     def bip(self, authorized=False):
         self.bip_amount = 0
         if authorized:
-            winsound.Beep(880, 125)
+            self.engine.say("BEEP !")
+            self.engine.runAndWait()
             self.bip_amount = 1
         else:
-            winsound.Beep(880, 125)
-            # attendre 500ms
-            time.sleep(0.25)
-            winsound.Beep(784, 125)
+            self.engine.say("BEEP-BEEP !")
+            self.engine.runAndWait()
             self.bip_amount = 2
-
-    def bip_rising(self):
-        frequency = 37
-        while True:
-            while frequency < 32767:
-                winsound.Beep(frequency, 100)
-                frequency += 100
-                time.sleep(0.00125)
-            while frequency > 37:
-                winsound.Beep(frequency, 100)
-                frequency -= 100
-                time.sleep(0.00125)
