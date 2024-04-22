@@ -52,3 +52,50 @@ def test_deux_portes_un_seul_lecteur_detecte_badge():
     # ET la deuxième porte reste fermée
     assert porte_spy1.porte_ouverte
     assert not porte_spy2.porte_ouverte
+
+## Cas deux portes, mais c'est le deuxième lecteur qui détecte le badge
+def test_deux_portes_un_seul_lecteur_detecte_badge_inverse():
+    # ETANT DONNE un Lecteur ayant détecté un Badge
+    # ET un autre Lecteur n'ayant rien détecté
+    # ET une Porte reliée chacune à un Lecteur
+    porte_spy1 = PorteSpy()
+    porte_spy2 = PorteSpy()
+
+    lecteur_fake1 = LecteurFake()
+    lecteur_fake2 = LecteurFake()
+
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.associer(lecteur_fake1, porte_spy1)
+    moteur_ouverture.associer(lecteur_fake2, porte_spy2)
+
+    lecteur_fake2.simuler_detection_badge()
+    # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
+    moteur_ouverture.interroger()
+    # ALORS la première porte est ouverte
+    # ET la deuxième porte reste fermée
+    assert not porte_spy1.porte_ouverte
+    assert porte_spy2.porte_ouverte
+
+## Cas deux portes, deux lecteurs, deux badges
+def test_deux_portes_deux_lecteurs_deux_badges():
+    # ETANT DONNE un Lecteur ayant détecté un Badge
+    # ET un autre Lecteur ayant détecté un Badge
+    # ET une Porte reliée chacune à un Lecteur
+    porte_spy1 = PorteSpy()
+    porte_spy2 = PorteSpy()
+
+    lecteur_fake1 = LecteurFake()
+    lecteur_fake2 = LecteurFake()
+
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.associer(lecteur_fake1, porte_spy1)
+    moteur_ouverture.associer(lecteur_fake2, porte_spy2)
+
+    lecteur_fake1.simuler_detection_badge()
+    lecteur_fake2.simuler_detection_badge()
+    # QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
+    moteur_ouverture.interroger()
+    # ALORS la première porte est ouverte
+    # ET la deuxième porte est ouverte
+    assert porte_spy1.porte_ouverte
+    assert porte_spy2.porte_ouverte
