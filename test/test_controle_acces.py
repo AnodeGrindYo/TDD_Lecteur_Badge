@@ -4,11 +4,14 @@ from utilities.porteSpy import PorteSpy
 from utilities.lecteurFake import LecteurFake
 from badge import Badge
 
+PorteTest = PorteSpy
+LecteurTest = LecteurFake
+
 ## Cas nominal 
 def test_lecteur_detecte_badge_et_ouvre_porte():
     # ETANT DONNE une porte reliée à un lecteur, ayant détecté un badge
-    porte_spy = PorteSpy()
-    lecteur_fake = LecteurFake()
+    porte_spy = PorteTest()
+    lecteur_fake = LecteurTest()
 
     badge = Badge()
 
