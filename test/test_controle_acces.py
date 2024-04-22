@@ -132,7 +132,7 @@ def test_badge_bloque():
     badge = Badge()
 
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-    lecteur_fake.presenter_badge(badge)
+    lecteur_fake.simuler_detection_badge(badge)
 
     # ET que le badge a été bloqué
     moteur_ouverture.bloquer_badge(badge)
@@ -150,7 +150,7 @@ def test_porte_est_ouverte_puis_badge_bloque_est_presente():
     badge1 = Badge()
 
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-    lecteur_fake.presenter_badge(badge1)
+    lecteur_fake.simuler_detection_badge(badge1)
     # ET que le moteur d'ouverture a autorisé l'ouverture de la porte une premiere fois
     moteur_ouverture.interroger()
     assert porte_spy.porte_ouverte
@@ -159,7 +159,7 @@ def test_porte_est_ouverte_puis_badge_bloque_est_presente():
     # QUAND un badge bloqué est ensuite présenté au lecteur
     badge2 = Badge()
     moteur_ouverture.bloquer_badge(badge2)
-    lecteur_fake.presenter_badge(badge2)
+    lecteur_fake.simuler_detection_badge(badge2)
     moteur_ouverture.interroger()
     # ALORS la porte n'est pas ouverte
     assert not porte_spy.porte_ouverte
@@ -176,7 +176,7 @@ def test_badge_bloque_puis_debloque():
     porte_spy = PorteSpy()
     lecteur_fake = LecteurFake()
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-    lecteur_fake.presenter_badge(badge)
+    lecteur_fake.simuler_detection_badge(badge)
     moteur_ouverture.interroger()
     # ALORS la porte est ouverte
     assert porte_spy.porte_ouverte
@@ -193,7 +193,7 @@ def test_badge_bloque_autre_badge_presente_ouvre_porte():
     porte_spy = PorteSpy()
     lecteur_fake = LecteurFake()
     moteur_ouverture.associer(lecteur_fake, porte_spy)
-    lecteur_fake.presenter_badge(badge2)
+    lecteur_fake.simuler_detection_badge(badge2)
     moteur_ouverture.interroger()
     # ALORS la porte est ouverte
     assert porte_spy.porte_ouverte
