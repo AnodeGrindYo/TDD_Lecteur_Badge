@@ -32,6 +32,31 @@ def test_lecteur_non_detecte_badge_et_ne_pas_ouvrir_porte():
 # ALORS le signal d'ouverture n'est pas envoyé à la porte
     assert not porte_spy.porte_ouverte
 
+## Cas aucune interrogation
+def test_aucune_interrogation():
+# ETANT DONNE une porte reliée à un lecteur
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+# QUAND le Moteur d'ouverture n'effectue pas d'interrogation des lecteurs
+# ALORS le signal d'ouverture n'est pas envoyé à la porte
+    assert not porte_spy.porte_ouverte
+
+## Cas non badgé
+def test_non_badge():
+# ETANT DONNE une porte reliée à un lecteur, n'ayant pas détecté de badge
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+# QUAND le Moteur d'ouverture effectue une interrogation des lecteurs
+    moteur_ouverture.interroger()
+# ALORS le signal d'ouverture n'est pas envoyé à la porte
+    assert not porte_spy.porte_ouverte
+
 ## Cas deux portes
 def test_deux_portes_un_seul_lecteur_detecte_badge():
     # ETANT DONNE un Lecteur ayant détecté un Badge
