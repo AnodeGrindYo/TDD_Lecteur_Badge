@@ -2,7 +2,7 @@ from badge import Badge
 
 class LecteurCarte:
     def __init__(self):
-        self.badges_detecte = False
+        self.badge_detecte = False
 
     def presenter_badge(self, badge):
-        self.badges_detecte = True
+        self.badge_detecte = True
