@@ -141,9 +141,6 @@ def test_badge_bloque():
     # ALORS la porte n'est pas ouverte
     assert not porte_spy.porte_ouverte
 
-
-
-
 ## Cas : un badge non bloque est detecte, la porte est ouverte, puis un autre badge bloque est detecte
 def test_porte_est_ouverte_puis_badge_bloque_est_presente():
     # ETANT DONNE un lecteur ayant detecté un badge non bloqué
