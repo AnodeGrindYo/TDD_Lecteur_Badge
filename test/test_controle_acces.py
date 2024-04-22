@@ -230,3 +230,14 @@ def test_lecteur_bip_deux_fois_si_badge_autorisé():
     moteur_ouverture.interroger()
     # ALORS le lecteur émet un bip
     assert lecteur_fake.bip_amount == 2
+
+def test_lecteur_ne_bip_pas_si_aucun_badge_presente():
+    # ETANT DONNE un lecteur associé à une porte
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+    # QUAND aucun badge n'est présenté au lecteur
+    moteur_ouverture.interroger()
+    # ALORS le lecteur n'émet pas de bip
+    assert lecteur_fake.bip_amount == 0

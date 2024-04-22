@@ -28,3 +28,15 @@ class LecteurFake (LecteurCarte):
             time.sleep(0.25)
             winsound.Beep(784, 125)
             self.bip_amount = 2
+
+    def bip_rising(self):
+        frequency = 37
+        while True:
+            while frequency < 32767:
+                winsound.Beep(frequency, 100)
+                frequency += 100
+                time.sleep(0.00125)
+            while frequency > 37:
+                winsound.Beep(frequency, 100)
+                frequency -= 100
+                time.sleep(0.00125)
