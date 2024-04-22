@@ -163,3 +163,20 @@ def test_porte_est_ouverte_puis_badge_bloque_est_presente():
     moteur_ouverture.interroger()
     # ALORS la porte n'est pas ouverte
     assert not porte_spy.porte_ouverte
+
+## cas test badge bloqué puis débloqué
+def test_badge_bloque_puis_debloque():
+    # ETANT DONNE un badge bloqué
+    badge = Badge()
+    moteur_ouverture = MoteurOuverture()
+    moteur_ouverture.bloquer_badge(badge)
+    # ET que le badge est ensuite débloqué
+    moteur_ouverture.debloquer_badge(badge)
+    # QUAND le badge est présenté à un lecteur
+    porte_spy = PorteSpy()
+    lecteur_fake = LecteurFake()
+    moteur_ouverture.associer(lecteur_fake, porte_spy)
+    lecteur_fake.presenter_badge(badge)
+    moteur_ouverture.interroger()
+    # ALORS la porte est ouverte
+    assert porte_spy.porte_ouverte
