@@ -1,7 +1,5 @@
 import pytest
-from lecteur_carte import LecteurCarte
-from badge import Badge
-from moteur_ouverture import MoteurOuverture
+from src.moteur_ouverture import MoteurOuverture
 from utilities.porteSpy import PorteSpy
 from utilities.lecteurFake import LecteurFake
 
