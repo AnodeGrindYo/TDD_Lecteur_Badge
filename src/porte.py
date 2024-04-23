@@ -5,4 +5,4 @@ class Porte():
         pass
 
     def ouvrir(self):
-        pass
+        return 1

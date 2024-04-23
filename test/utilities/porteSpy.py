@@ -5,9 +5,11 @@ class PorteSpy (Porte):
     def __init__(self):
         super().__init__()
         self.porte_ouverte = False
+    
 
     def ouvrir(self):
         self.porte_ouverte = True
+        return 1
 
     def fermer(self):
         self.porte_ouverte = False

@@ -15,10 +15,18 @@ class MoteurOuverture:
             if lecteur.badge_detecte:
                 if not self.badge_est_bloque(lecteur.badge):
                     lecteur.bip(True)
-                    porte.ouvrir()
+                    retour_porte = porte.ouvrir()
+                    if retour_porte == 1: # Pas d'exception
+                        print("flash vert")
+                        lecteur.flash(False, True, False) # Vert
+                    else:
+                        print("flash violet")
+                        lecteur.flash(True, False, True) # Violet
                     lecteur.reset()
                 else:
+                    print("flash rouge")
                     lecteur.bip(False)
+                    lecteur.flash(True, False, False) # Rouge
                     lecteur.reset()
 
 
