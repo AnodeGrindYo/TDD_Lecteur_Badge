@@ -6,6 +6,7 @@ class LecteurCarte:
         self.badge = None
 
     def presenter_badge(self, badge: Badge):
+        print("badge detecté : ")
         self.badge_detecte = True
         self.badge = badge
 

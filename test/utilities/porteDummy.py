@@ -5,4 +5,4 @@ class PorteDummy(PorteSpy):
         super().__init__()
 
     def ouvrir(self):
-        raise 666
+        raise 
